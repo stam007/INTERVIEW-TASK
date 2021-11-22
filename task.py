@@ -11,12 +11,14 @@ report={"Section":[],"Sub-Section":[],"Given DataType":[],"Expected DataType":[]
 
 #LOAD THE STANDARD DEFINITION
 f = open(path_standard_definition_json,)
-standard = json.load(f) 
+standard = json.load(f)
+print("STANDARD",standard) 
 f.close()
 
 #LOAD THE ERROR CODES
 m = open(path_error_codes,)
-errors = json.load(m) 
+errors = json.load(m)
+print("ERRORS",errors) 
 m.close()
 
 
@@ -92,6 +94,7 @@ def export_summary(df):
   for index, row in df.iterrows():
     err = [d for d in errors if d['code']==row['Error Code']][0]["message_template"].replace("LXY",row['Sub-Section']).replace("LX",row['Section']).replace("{data_type}",row['Expected DataType']).replace("{max_length}",str(row['Expected MaxLength']))
     file1.write(err+" \n")
+    print(err)
 
   file1.close()
   return
@@ -114,6 +117,7 @@ def Run_Task():
           index = int(k['key'].replace(key,''))
           make_report(index,ln,key,k)
   
+  print("REPORT",report)
   df = pd.DataFrame(report)
   export_report(df)
   export_summary(df)
